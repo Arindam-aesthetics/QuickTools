@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compress Image — QuickTools</title>
+<meta name="description" content="Shrink a photo's file size without losing much quality. Runs entirely in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-path-prefix="../">
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="../index.html" class="logo">
+      <span class="logo-mark" aria-hidden="true"></span>
+      QuickTools
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html" aria-current="page">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap tool-page-header">
+    <div class="breadcrumb"><a href="../tools.html">Tools</a> / Compress Image</div>
+    <h1>Compress Image</h1>
+    <p class="lede">Reduce a photo's file size right in your browser — nothing is uploaded anywhere.</p>
+  </div>
+
+  <div class="wrap tool-shell">
+    <div class="panel">
+
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload an image">
+        <div class="dz-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg></div>
+        <h3>Drop an image here</h3>
+        <p>or choose a file — JPG, PNG, or WebP</p>
+        <label class="btn btn-primary" for="fileInput">Choose Image</label>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
+      </div>
+
+      <div class="error-banner" id="errorBanner" role="alert"></div>
+
+      <div id="workArea" style="display:none;">
+        <div class="preview-compare">
+          <div class="preview-box">
+            <img id="originalPreview" alt="Original image preview">
+            <div class="pb-label"><span>Original</span><strong id="originalSize">—</strong></div>
+          </div>
+          <div class="preview-box">
+            <img id="compressedPreview" alt="Compressed image preview">
+            <div class="pb-label"><span>Compressed</span><strong id="compressedSize">—</strong></div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="range-field">
+            <div class="range-top"><span>Quality</span><span id="qualityValue">75%</span></div>
+            <input type="range" id="qualitySlider" min="10" max="95" value="75" step="1">
+          </div>
+        </div>
+
+        <details class="more-options">
+          <summary>More options</summary>
+          <div class="more-body">
+            <div class="field">
+              <label for="outputFormat">Output format</label>
+              <select id="outputFormat">
+                <option value="image/jpeg">JPG</option>
+                <option value="image/webp">WebP</option>
+                <option value="image/png">PNG (lossless — larger file)</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <div class="progress-line" id="progressLine"><span class="spinner"></span> Compressing…</div>
+
+        <div class="result-banner" id="resultBanner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          <span><span class="rb-num" id="reductionPct">—</span> smaller</span>
+        </div>
+
+        <div class="actions-row">
+          <button class="btn btn-primary btn-lg" id="compressBtn">Compress</button>
+          <a class="btn btn-secondary btn-lg" id="downloadBtn" download style="display:none;">Download</a>
+          <button class="btn btn-ghost" id="resetBtn">Compress another</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copy">© 2026 QuickTools. Free tools, no login required.</div>
+    <nav aria-label="Footer">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/compress-image.js"></script>
+</body>
+</html>

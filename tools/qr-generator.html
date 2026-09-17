@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Generator — QuickTools</title>
+<meta name="description" content="Turn a link, message, or UPI payment into a scannable QR code, right in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-path-prefix="../">
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="../index.html" class="logo">
+      <span class="logo-mark" aria-hidden="true"></span>
+      QuickTools
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html" aria-current="page">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap tool-page-header">
+    <div class="breadcrumb"><a href="../tools.html">Tools</a> / QR Code Generator</div>
+    <h1>QR Code Generator</h1>
+    <p class="lede">Enter a link, a message, or UPI payment details, and get a scannable code instantly.</p>
+  </div>
+
+  <div class="wrap tool-shell">
+    <div class="panel qr-layout">
+
+      <div>
+        <div class="tab-row" role="tablist">
+          <button class="tab-btn active" data-tab="url" role="tab" aria-selected="true">Link</button>
+          <button class="tab-btn" data-tab="text" role="tab" aria-selected="false">Text</button>
+          <button class="tab-btn" data-tab="upi" role="tab" aria-selected="false">UPI Payment</button>
+        </div>
+
+        <div class="tab-panel active" data-panel="url">
+          <div class="field">
+            <label for="urlInput">URL</label>
+            <input type="url" id="urlInput" placeholder="https://example.com">
+          </div>
+        </div>
+
+        <div class="tab-panel" data-panel="text">
+          <div class="field">
+            <label for="textInput">Text or message</label>
+            <textarea id="textInput" rows="4" placeholder="Anything you want encoded in the code"></textarea>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-panel="upi">
+          <div class="field-row">
+            <div class="field" style="flex:1; min-width: 200px;">
+              <label for="upiIdInput">UPI ID</label>
+              <input type="text" id="upiIdInput" placeholder="name@bank">
+            </div>
+            <div class="field" style="flex:1; min-width: 200px;">
+              <label for="upiNameInput">Payee name</label>
+              <input type="text" id="upiNameInput" placeholder="Your name">
+            </div>
+          </div>
+          <div class="field">
+            <label for="upiAmountInput">Amount (optional)</label>
+            <input type="number" id="upiAmountInput" placeholder="e.g. 100" min="1">
+          </div>
+        </div>
+
+        <details class="more-options">
+          <summary>More options</summary>
+          <div class="more-body">
+            <div class="field">
+              <label for="qrSize">Code size</label>
+              <select id="qrSize">
+                <option value="220">Small</option>
+                <option value="320" selected>Medium</option>
+                <option value="440">Large</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <div class="error-banner" id="errorBanner" role="alert"></div>
+
+        <div class="actions-row">
+          <button class="btn btn-primary btn-lg" id="generateBtn">Generate QR Code</button>
+          <button class="btn btn-ghost" id="copyContentBtn">Copy content</button>
+        </div>
+      </div>
+
+      <div class="qr-preview-wrap">
+        <div id="qrCanvasHost"></div>
+        <p id="qrEmptyState" style="margin:0; color: var(--ink-faint); font-size: 14px; text-align:center;">Your QR code will appear here.</p>
+        <a class="btn btn-secondary" id="downloadQrBtn" download="qrcode.png" style="display:none;">Download PNG</a>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copy">© 2026 QuickTools. Free tools, no login required.</div>
+    <nav aria-label="Footer">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/qr-generator.js"></script>
+</body>
+</html>

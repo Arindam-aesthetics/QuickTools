@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Tools — QuickTools</title>
+<meta name="description" content="Browse every QuickTools tool: image compressing, resizing, PDF merging, and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark" aria-hidden="true"></span>
+      QuickTools
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="tools.html" aria-current="page">Tools</a>
+      <a href="about.html">About</a>
+      <a href="support.html">Support</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom: 20px;">
+    <div class="wrap">
+      <h1 style="font-size: clamp(28px, 4vw, 40px);">All tools</h1>
+      <p class="lede" style="font-size: 16px;">Every tool follows the same idea: open, do the thing, download the result.</p>
+    </div>
+  </section>
+
+  <section style="padding-top: 12px;">
+    <div class="wrap">
+      <div class="directory-controls">
+        <div class="dir-search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="dirSearch" placeholder="Search tools…" autocomplete="off" aria-label="Search tools">
+        </div>
+        <div class="filter-row" role="group" aria-label="Filter by category">
+          <button class="filter-chip active" data-category="all">All</button>
+          <button class="filter-chip" data-category="image">Image Tools</button>
+          <button class="filter-chip" data-category="pdf">PDF Tools</button>
+          <button class="filter-chip" data-category="other">Other Tools</button>
+        </div>
+      </div>
+
+      <div class="tool-grid" id="directoryGrid"></div>
+
+      <div class="empty-state" id="dirEmpty">
+        <div class="glyph"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <p>No tools match that search. Try a different word, like “resize” or “merge”.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copy">© 2026 QuickTools. Free tools, no login required.</div>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a href="about.html">About</a>
+      <a href="support.html">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="js/tools-data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

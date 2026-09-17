@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support — QuickTools</title>
+<meta name="description" content="Support QuickTools development via UPI. No payment is required to use any tool.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark" aria-hidden="true"></span>
+      QuickTools
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a href="about.html">About</a>
+      <a href="support.html" aria-current="page">Support</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom: 12px;">
+    <div class="wrap">
+      <h1 style="font-size: clamp(28px, 4vw, 40px);">Support QuickTools</h1>
+      <p class="lede" style="font-size: 16px;">QuickTools is built to provide free, useful browser-based tools for everyday tasks. If QuickTools has helped you, you can support its development. No payment is required to use any tool.</p>
+    </div>
+  </section>
+
+  <section style="padding-top: 12px;">
+    <div class="wrap">
+      <div class="support-layout">
+
+        <div class="qr-card">
+          <img class="qr-img" src="assets/upi-qr.png" alt="UPI QR code for supporting QuickTools" id="qrImage">
+
+          <div class="amount-row" id="amountRow">
+            <button class="amount-chip" data-amount="20">₹20</button>
+            <button class="amount-chip" data-amount="50">₹50</button>
+            <button class="amount-chip" data-amount="100">₹100</button>
+            <div class="amount-custom">
+              <span aria-hidden="true">₹</span>
+              <input type="number" id="customAmount" placeholder="Custom" min="1" aria-label="Custom amount in rupees">
+            </div>
+          </div>
+
+          <div class="upi-id-row">
+            <code id="upiIdText">—</code>
+            <button class="icon-btn" id="copyUpiBtn" aria-label="Copy UPI ID" title="Copy UPI ID">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+
+          <a class="btn btn-primary btn-block btn-lg" style="margin-top: 16px;" id="payUpiBtn" href="#">Pay via UPI</a>
+
+          <p class="disclaimer-note">This is a frontend-only support page. Payments are handled entirely by your UPI app — QuickTools does not process or automatically verify any payment.</p>
+        </div>
+
+        <div>
+          <div class="why-support-list">
+            <div class="why-item">
+              <div class="wi-mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg></div>
+              <div>
+                <h3>Keeps every tool free</h3>
+                <p>Support goes toward keeping QuickTools ad-free and open to anyone, with no paywalled features.</p>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="wi-mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20l-1.4-1.3C5.4 14.2 2 11.1 2 7.3 2 4.9 4 3 6.5 3c1.4 0 2.8.7 3.5 1.7C10.7 3.7 12.1 3 13.5 3 16 3 18 4.9 18 7.3c0 3.8-3.4 6.9-8.6 11.4L12 20z"/></svg></div>
+              <div>
+                <h3>No pressure, ever</h3>
+                <p>Every tool works fully without paying anything. Support is entirely optional and always will be.</p>
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="wi-mark"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11z"/></svg></div>
+              <div>
+                <h3>Goes directly to development</h3>
+                <p>Time spent building and maintaining new tools, fixing bugs, and keeping things fast.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copy">© 2026 QuickTools. Free tools, no login required.</div>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a href="about.html">About</a>
+      <a href="support.html">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/support.js"></script>
+</body>
+</html>

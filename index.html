@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickTools - Everyday tools. Without the hassle.</title>
+<meta name="description" content="Free, simple browser-based tools for the little tasks that take too much time. No login, no upload — everything runs on your device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark" aria-hidden="true"></span>
+      QuickTools
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="tools.html">Tools</a>
+      <a href="about.html">About</a>
+      <a href="support.html">Support</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-eyebrow">A free toolbox that lives in your browser</div>
+      <h1>Everyday tools.<br>Without the hassle.</h1>
+      <p class="lede">Free, simple browser-based tools for the little tasks that take too much time.</p>
+
+      <form class="search-shell" role="search">
+        <div class="search-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="heroSearch" placeholder="What do you need to do?" autocomplete="off" aria-label="Search for a tool">
+          <button type="submit" class="btn btn-primary">Find tool</button>
+        </div>
+        <div class="search-results" id="heroSearchResults" role="listbox"></div>
+      </form>
+    </div>
+  </section>
+
+  <section id="popular">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Popular tools</h2>
+          <p>Jump straight in — every tool opens ready to use.</p>
+        </div>
+        <a href="tools.html" class="btn btn-secondary">See all tools</a>
+      </div>
+
+      <div class="tool-grid">
+        <a class="tool-card" href="tools/compress-image.html">
+          <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></div>
+          <h3>Compress Image</h3>
+          <p>Shrink a photo's file size without losing much quality.</p>
+          <span class="tool-cat">Image Tools</span>
+        </a>
+        <a class="tool-card" href="tools/resize-image.html">
+          <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="10" height="10" rx="1.5"/><path d="M14 20h6v-6M20 14L13 21"/></svg></div>
+          <h3>Resize Image</h3>
+          <p>Change an image's width and height in pixels.</p>
+          <span class="tool-cat">Image Tools</span>
+        </a>
+        <a class="tool-card" href="tools/image-to-pdf.html">
+          <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="12" height="12" rx="1.5"/><path d="M9 21h9a2 2 0 0 0 2-2V9l-5-5"/></svg></div>
+          <h3>Image to PDF</h3>
+          <p>Combine one or more photos into a single PDF file.</p>
+          <span class="tool-cat">PDF Tools</span>
+        </a>
+        <a class="tool-card" href="tools/merge-pdf.html">
+          <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3v6a3 3 0 0 0 3 3h4a3 3 0 0 0 3-3V3M12 12v9M8 17l4 4 4-4"/></svg></div>
+          <h3>Merge PDF</h3>
+          <p>Join multiple PDF files into one, in the order you choose.</p>
+          <span class="tool-cat">PDF Tools</span>
+        </a>
+        <a class="tool-card" href="tools/qr-generator.html">
+          <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20h.01"/></svg></div>
+          <h3>QR Code Generator</h3>
+          <p>Turn a link, message, or UPI payment into a scannable code.</p>
+          <span class="tool-cat">Other Tools</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="strip">
+        <div>
+          <span class="strip-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            Runs on your device
+          </span>
+          <h2>Your files, your device.</h2>
+          <p>Tools marked as local process everything right in your browser using standard web APIs. Your images and PDFs are never uploaded to a server, so they never leave your device.</p>
+        </div>
+        <div class="strip-visual" aria-hidden="true"><div class="device"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="strip center">
+        <h2>Did QuickTools save you time?</h2>
+        <p>If you found it useful, you can support the project. Every tool remains free.</p>
+        <a href="support.html" class="btn btn-primary btn-lg">Support the project</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copy">© 2026 QuickTools. Free tools, no login required.</div>
+    <nav aria-label="Footer">
+      <a href="index.html">Home</a>
+      <a href="tools.html">Tools</a>
+      <a href="about.html">About</a>
+      <a href="support.html">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="js/tools-data.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image to PDF — QuickTools</title>
+<meta name="description" content="Combine one or more photos into a single PDF file, right in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-path-prefix="../">
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="../index.html" class="logo">
+      <span class="logo-mark" aria-hidden="true"></span>
+      QuickTools
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html" aria-current="page">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap tool-page-header">
+    <div class="breadcrumb"><a href="../tools.html">Tools</a> / Image to PDF</div>
+    <h1>Image to PDF</h1>
+    <p class="lede">Add one or more images, put them in order, and download a single PDF.</p>
+  </div>
+
+  <div class="wrap tool-shell">
+    <div class="panel">
+
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload images">
+        <div class="dz-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg></div>
+        <h3>Drop images here</h3>
+        <p>or choose files — you can add more than one</p>
+        <label class="btn btn-primary" for="fileInput">Choose Images</label>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple>
+      </div>
+
+      <div class="error-banner" id="errorBanner" role="alert"></div>
+
+      <div id="workArea" style="display:none;">
+        <div class="step-title" style="margin-top: 20px;">Images (<span id="fileCount">0</span>) — drag to reorder</div>
+        <p class="reorder-hint">The PDF pages will follow this order, top to bottom.</p>
+        <div class="file-list" id="fileList"></div>
+
+        <div class="progress-line" id="progressLine"><span class="spinner"></span> Building PDF…</div>
+        <div class="result-banner" id="resultBanner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>PDF ready — <span class="rb-num" id="pageCount">—</span> page(s)</span>
+        </div>
+
+        <div class="actions-row">
+          <button class="btn btn-primary btn-lg" id="buildBtn">Create PDF</button>
+          <a class="btn btn-secondary btn-lg" id="downloadBtn" download="images.pdf" style="display:none;">Download PDF</a>
+          <button class="btn btn-ghost" id="resetBtn">Start over</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copy">© 2026 QuickTools. Free tools, no login required.</div>
+    <nav aria-label="Footer">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/image-to-pdf.js"></script>
+</body>
+</html>
