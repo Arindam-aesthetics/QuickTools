@@ -16,9 +16,16 @@
   const resultDims = document.getElementById("resultDims");
   const progressLine = document.getElementById("progressLine");
 
+  const MAX_FILE_BYTES = 25 * 1024 * 1024; // 25 MB
+  const MAX_DIMENSION = 10000; // px, guards against runaway canvas memory use
+
   let sourceImage = null;
   let sourceFile = null;
   let ratio = 1;
+  const activeUrls = [];
+
+  function trackUrl(url) { activeUrls.push(url); return url; }
+  function revokeAllUrls() { while (activeUrls.length) URL.revokeObjectURL(activeUrls.pop()); }
 
   function showError(msg) { errorBanner.textContent = msg; errorBanner.classList.add("show"); }
   function clearError() { errorBanner.classList.remove("show"); }
@@ -27,11 +34,16 @@
     clearError();
     if (!file) return;
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      showError("Please choose a JPG, PNG, or WebP image.");
+      showError("This file type isn't supported. Please choose a JPG, PNG, or WebP image.");
       return;
     }
+    if (file.size > MAX_FILE_BYTES) {
+      showError("That image is larger than 25 MB. Please choose a smaller file.");
+      return;
+    }
+    revokeAllUrls();
     sourceFile = file;
-    const url = URL.createObjectURL(file);
+    const url = trackUrl(URL.createObjectURL(file));
     const img = new Image();
     img.onload = () => {
       sourceImage = img;
@@ -45,7 +57,7 @@
       workArea.style.display = "block";
       workArea.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
-    img.onerror = () => showError("That file couldn't be read as an image.");
+    img.onerror = () => showError("That file couldn't be opened as an image. It may be corrupted.");
     img.src = url;
   }
 
@@ -91,11 +103,18 @@
   });
 
   resizeBtn.addEventListener("click", () => {
-    if (!sourceImage) return;
+    if (!sourceImage) {
+      showError("Choose an image first.");
+      return;
+    }
     const w = Number(widthInput.value);
     const h = Number(heightInput.value);
     if (!w || !h || w < 1 || h < 1) {
       showError("Enter a width and height greater than 0.");
+      return;
+    }
+    if (w > MAX_DIMENSION || h > MAX_DIMENSION) {
+      showError("That size is too large. Please use dimensions under " + MAX_DIMENSION + "px.");
       return;
     }
     clearError();
@@ -113,7 +132,7 @@
           (blob) => {
             progressLine.classList.remove("show");
             if (!blob) { showError("Resizing failed. Try a smaller size."); return; }
-            const url = URL.createObjectURL(blob);
+            const url = trackUrl(URL.createObjectURL(blob));
             resultDims.textContent = w + " × " + h + " px";
             resultBanner.classList.add("show");
             const ext = mime === "image/png" ? "png" : "jpg";
@@ -126,12 +145,13 @@
         );
       } catch (err) {
         progressLine.classList.remove("show");
-        showError("Something went wrong resizing that image.");
+        showError("Something went wrong resizing that image. Please try again.");
       }
     }, 150);
   });
 
   resetBtn.addEventListener("click", () => {
+    revokeAllUrls();
     sourceImage = null;
     sourceFile = null;
     fileInput.value = "";

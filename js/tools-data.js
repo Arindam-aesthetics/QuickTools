@@ -40,6 +40,24 @@ const QT_TOOLS = [
     keywords: "combine pdf files join pdfs stitch documents together"
   },
   {
+    id: "resize-pdf",
+    name: "Resize PDF",
+    desc: "Change your PDF's page size to A4, A5, Letter, or a custom size.",
+    href: "tools/resize-pdf.html",
+    category: "pdf",
+    icon: "resizepdf",
+    keywords: "change pdf page size pdf dimensions a4 a5 letter legal custom paper size"
+  },
+  {
+    id: "compress-pdf",
+    name: "Compress PDF",
+    desc: "Reduce a PDF's file size for easier sharing and uploading.",
+    href: "tools/compress-pdf.html",
+    category: "pdf",
+    icon: "compress",
+    keywords: "make pdf file smaller reduce pdf size shrink pdf pdf compressor"
+  },
+  {
     id: "qr-generator",
     name: "QR Code Generator",
     desc: "Turn a link, message, or UPI payment into a scannable code.",

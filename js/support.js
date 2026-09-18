@@ -1,12 +1,12 @@
 // ---------------------------------------------------------------------
-// Editable configuration — change these three values to use your own
-// UPI details. The QR image path should point at a QR you generated
-// from your own UPI app; it is shown as-is and is not read by this code.
+// Editable configuration - change these three values to use your own
+// UPI details. qrImage should point at a QR code you generated from
+// your own UPI app; it is shown as-is and is not read by this code.
 // ---------------------------------------------------------------------
-const QT_UPI_CONFIG = {
+const SUPPORT_CONFIG = {
   upiId: "bhattacharyaa421@oksbi",
   displayName: "QuickTools",
-  qrImagePath: "assets/upi-qr.png"
+  qrImage: "assets/upi-qr.png"
 };
 
 (function () {
@@ -19,18 +19,18 @@ const QT_UPI_CONFIG = {
 
   if (!upiIdText) return;
 
-  upiIdText.textContent = QT_UPI_CONFIG.upiId;
-  if (qrImage) qrImage.src = QT_UPI_CONFIG.qrImagePath;
+  upiIdText.textContent = SUPPORT_CONFIG.upiId;
+  if (qrImage) qrImage.src = SUPPORT_CONFIG.qrImage;
 
   let selectedAmount = null;
 
   function buildUpiLink() {
     const params = new URLSearchParams({
-      pa: QT_UPI_CONFIG.upiId,
-      pn: QT_UPI_CONFIG.displayName,
+      pa: SUPPORT_CONFIG.upiId,
+      pn: SUPPORT_CONFIG.displayName,
       cu: "INR"
     });
-    if (selectedAmount) params.set("am", selectedAmount);
+    if (selectedAmount && Number(selectedAmount) > 0) params.set("am", selectedAmount);
     return "upi://pay?" + params.toString();
   }
 
@@ -62,10 +62,10 @@ const QT_UPI_CONFIG = {
   if (copyBtn) {
     copyBtn.addEventListener("click", async () => {
       try {
-        await navigator.clipboard.writeText(QT_UPI_CONFIG.upiId);
+        await navigator.clipboard.writeText(SUPPORT_CONFIG.upiId);
         qtToast("UPI ID copied");
       } catch (err) {
-        qtToast("Couldn't copy — select and copy manually");
+        qtToast("Couldn't copy - select and copy manually");
       }
     });
   }

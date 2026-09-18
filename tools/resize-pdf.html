@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Resize PDF - QuickTools</title>
+<meta name="description" content="Change your PDF page size to A4, A5, Letter, or a custom size, right in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-path-prefix="../">
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="../index.html" class="logo">
+      <span class="logo-mark" aria-hidden="true"></span>
+      QuickTools
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html" aria-current="page">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap tool-page-header">
+    <div class="breadcrumb"><a href="../tools.html">Tools</a> / Resize PDF</div>
+    <h1>Resize PDF</h1>
+    <p class="lede">Change your PDF page size to A4, A5, Letter, or a custom size. This changes the page dimensions - it does not compress the file.</p>
+  </div>
+
+  <div class="wrap tool-shell">
+    <div class="panel">
+
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload a PDF">
+        <div class="dz-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg></div>
+        <h3>Drop a PDF here</h3>
+        <p>or choose a file, up to 50 MB</p>
+        <label class="btn btn-primary" for="fileInput">Choose PDF</label>
+        <input type="file" id="fileInput" accept="application/pdf">
+      </div>
+
+      <div class="error-banner" id="errorBanner" role="alert"></div>
+
+      <div id="workArea" style="display:none;">
+        <div class="file-list">
+          <div class="file-row">
+            <div class="thumb" style="display:flex;align-items:center;justify-content:center;color:var(--accent-ink);background:var(--accent-soft);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+            </div>
+            <div class="fmeta">
+              <div class="fname" id="fileName">-</div>
+              <div class="fsize" id="fileMeta">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="pageSizeSelect">Page size</label>
+            <select id="pageSizeSelect">
+              <option value="a4" selected>A4</option>
+              <option value="a5">A5</option>
+              <option value="letter">Letter</option>
+              <option value="legal">Legal</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="orientationSelect">Orientation</label>
+            <select id="orientationSelect">
+              <option value="portrait" selected>Portrait</option>
+              <option value="landscape">Landscape</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row" id="customSizeRow" style="display:none;">
+          <div class="field">
+            <label for="customWidth">Custom width (mm)</label>
+            <input type="number" id="customWidth" min="10" placeholder="e.g. 210">
+          </div>
+          <div class="field">
+            <label for="customHeight">Custom height (mm)</label>
+            <input type="number" id="customHeight" min="10" placeholder="e.g. 297">
+          </div>
+        </div>
+
+        <p class="field-note" id="sizeSummary">Every page will be resized to fit A4, portrait.</p>
+
+        <p class="field-note">Page content is scaled to fit the new page size and centered - nothing is stretched or cropped unless the content already exceeded the page.</p>
+
+        <div class="progress-line" id="progressLine"><span class="spinner"></span> Resizing pages...</div>
+        <div class="result-banner" id="resultBanner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          <span>Resized <span class="rb-num" id="resultPageCount">-</span> page(s)</span>
+        </div>
+
+        <div class="actions-row">
+          <button class="btn btn-primary btn-lg" id="resizeBtn">Resize PDF</button>
+          <a class="btn btn-secondary btn-lg" id="downloadBtn" download="resized.pdf" style="display:none;">Download PDF</a>
+          <button class="btn btn-ghost" id="resetBtn">Start over</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copy">© 2026 QuickTools. Free tools, no login required.</div>
+    <nav aria-label="Footer">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/resize-pdf.js"></script>
+</body>
+</html>

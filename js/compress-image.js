@@ -9,6 +9,7 @@
   const compressedSize = document.getElementById("compressedSize");
   const qualitySlider = document.getElementById("qualitySlider");
   const qualityValue = document.getElementById("qualityValue");
+  const qualityNote = document.getElementById("qualityNote");
   const outputFormat = document.getElementById("outputFormat");
   const compressBtn = document.getElementById("compressBtn");
   const downloadBtn = document.getElementById("downloadBtn");
@@ -17,9 +18,21 @@
   const reductionPct = document.getElementById("reductionPct");
   const progressLine = document.getElementById("progressLine");
 
+  const MAX_FILE_BYTES = 25 * 1024 * 1024; // 25 MB
+  const FORMAT_MIME = { jpg: "image/jpeg", webp: "image/webp", png: "image/png" };
+  const FORMAT_EXT = { jpg: "jpg", webp: "webp", png: "png" };
+
   let sourceFile = null;
   let sourceImage = null;
-  let compressedBlob = null;
+  const activeUrls = [];
+
+  function trackUrl(url) {
+    activeUrls.push(url);
+    return url;
+  }
+  function revokeAllUrls() {
+    while (activeUrls.length) URL.revokeObjectURL(activeUrls.pop());
+  }
 
   function showError(msg) {
     errorBanner.textContent = msg;
@@ -29,28 +42,41 @@
     errorBanner.classList.remove("show");
   }
 
+  function updateQualityAvailability() {
+    const isPng = outputFormat.value === "png";
+    qualitySlider.disabled = isPng;
+    qualityNote.textContent = isPng
+      ? "PNG doesn't use a quality setting - it's always lossless, so file size depends on the image itself."
+      : "Lower quality means a smaller file.";
+  }
+
   function loadFile(file) {
     clearError();
     if (!file) return;
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      showError("Please choose a JPG, PNG, or WebP image.");
+      showError("This file type isn't supported. Please choose a JPG, PNG, or WebP image.");
       return;
     }
+    if (file.size > MAX_FILE_BYTES) {
+      showError("That image is larger than 25 MB. Please choose a smaller file.");
+      return;
+    }
+    revokeAllUrls();
     sourceFile = file;
-    const url = URL.createObjectURL(file);
+    const url = trackUrl(URL.createObjectURL(file));
     const img = new Image();
     img.onload = () => {
       sourceImage = img;
       originalPreview.src = url;
       originalSize.textContent = qtFormatBytes(file.size);
       compressedPreview.src = url;
-      compressedSize.textContent = "—";
+      compressedSize.textContent = "-";
       resultBanner.classList.remove("show");
       downloadBtn.style.display = "none";
       workArea.style.display = "block";
       workArea.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
-    img.onerror = () => showError("That file couldn't be read as an image.");
+    img.onerror = () => showError("That file couldn't be opened as an image. It may be corrupted.");
     img.src = url;
   }
 
@@ -73,18 +99,25 @@
   qualitySlider.addEventListener("input", () => {
     qualityValue.textContent = qualitySlider.value + "%";
   });
+  outputFormat.addEventListener("change", updateQualityAvailability);
+  updateQualityAvailability();
 
   compressBtn.addEventListener("click", () => {
-    if (!sourceImage) return;
+    if (!sourceImage) {
+      showError("Choose an image first.");
+      return;
+    }
+    clearError();
     progressLine.classList.add("show");
     resultBanner.classList.remove("show");
     setTimeout(() => {
       try {
+        const mime = FORMAT_MIME[outputFormat.value];
         const canvas = document.createElement("canvas");
         canvas.width = sourceImage.naturalWidth;
         canvas.height = sourceImage.naturalHeight;
         const ctx = canvas.getContext("2d");
-        if (outputFormat.value === "image/jpeg") {
+        if (mime === "image/jpeg") {
           ctx.fillStyle = "#fff";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
@@ -94,11 +127,10 @@
           (blob) => {
             progressLine.classList.remove("show");
             if (!blob) {
-              showError("Compression failed — try a different format.");
+              showError("Compression failed. Try a different format or a smaller image.");
               return;
             }
-            compressedBlob = blob;
-            const url = URL.createObjectURL(blob);
+            const url = trackUrl(URL.createObjectURL(blob));
             compressedPreview.src = url;
             compressedSize.textContent = qtFormatBytes(blob.size);
 
@@ -106,25 +138,24 @@
             reductionPct.textContent = reduction + "%";
             resultBanner.classList.add("show");
 
-            const ext = outputFormat.value === "image/jpeg" ? "jpg" : outputFormat.value === "image/webp" ? "webp" : "png";
             downloadBtn.href = url;
-            downloadBtn.download = "compressed." + ext;
+            downloadBtn.download = "compressed." + FORMAT_EXT[outputFormat.value];
             downloadBtn.style.display = "inline-flex";
           },
-          outputFormat.value,
+          mime,
           quality
         );
       } catch (err) {
         progressLine.classList.remove("show");
-        showError("Something went wrong compressing that image.");
+        showError("Something went wrong compressing that image. Please try again.");
       }
     }, 150);
   });
 
   resetBtn.addEventListener("click", () => {
+    revokeAllUrls();
     sourceFile = null;
     sourceImage = null;
-    compressedBlob = null;
     fileInput.value = "";
     workArea.style.display = "none";
     clearError();

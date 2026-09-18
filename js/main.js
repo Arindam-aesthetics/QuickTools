@@ -10,13 +10,22 @@
     toggle.addEventListener("click", () => {
       const open = nav.classList.toggle("open");
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      document.body.style.overflow = open ? "hidden" : "";
     });
     nav.querySelectorAll("a").forEach((a) =>
       a.addEventListener("click", () => {
         nav.classList.remove("open");
         toggle.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
       })
     );
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 760 && nav.classList.contains("open")) {
+        nav.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+      }
+    });
   }
 })();
 
@@ -68,7 +77,7 @@ function qtFormatBytes(bytes) {
 
     resultsBox.innerHTML = "";
     if (matches.length === 0) {
-      resultsBox.innerHTML = `<div class="empty">No matching tool yet — try “compress”, “merge”, or “QR”.</div>`;
+      resultsBox.innerHTML = `<div class="empty">No matching tool yet - try “compress”, “merge”, or “QR”.</div>`;
     } else {
       matches.forEach((t) => {
         const a = document.createElement("a");
@@ -120,6 +129,7 @@ function qtFormatBytes(bytes) {
       resize: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="10" height="10" rx="1.5"/><path d="M14 20h6v-6M20 14L13 21"/></svg>',
       img2pdf: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="12" height="12" rx="1.5"/><path d="M9 21h9a2 2 0 0 0 2-2V9l-5-5"/></svg>',
       merge: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3v6a3 3 0 0 0 3 3h4a3 3 0 0 0 3-3V3M12 12v9M8 17l4 4 4-4"/></svg>',
+      resizepdf: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 17l3-3 3 3M12 14v6"/></svg>',
       qr: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20h.01"/></svg>'
     };
     return glyphs[icon] || "";

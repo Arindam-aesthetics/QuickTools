@@ -12,23 +12,28 @@
   const pageCount = document.getElementById("pageCount");
   const progressLine = document.getElementById("progressLine");
 
+  const MAX_FILE_BYTES = 25 * 1024 * 1024; // 25 MB per image
+
   let items = []; // { id, file, url }
   let dragId = null;
+  let pdfUrl = null;
 
   function showError(msg) { errorBanner.textContent = msg; errorBanner.classList.add("show"); }
   function clearError() { errorBanner.classList.remove("show"); }
 
   function addFiles(fileArr) {
     clearError();
-    const valid = fileArr.filter((f) => ["image/jpeg", "image/png", "image/webp"].includes(f.type));
-    if (valid.length === 0) {
-      showError("Please choose JPG, PNG, or WebP images.");
+    const tooBig = fileArr.filter((f) => f.size > MAX_FILE_BYTES);
+    const supported = fileArr.filter((f) => ["image/jpeg", "image/png", "image/webp"].includes(f.type) && f.size <= MAX_FILE_BYTES);
+
+    if (supported.length === 0) {
+      showError(tooBig.length ? "Those images are larger than 25 MB each. Please choose smaller files." : "Please choose JPG, PNG, or WebP images.");
       return;
     }
-    if (valid.length < fileArr.length) {
-      showError("Some files were skipped — only JPG, PNG, and WebP images are supported.");
+    if (supported.length < fileArr.length) {
+      showError("Some files were skipped - only JPG, PNG, and WebP images under 25 MB are supported.");
     }
-    valid.forEach((file) => {
+    supported.forEach((file) => {
       items.push({ id: "f" + Math.random().toString(36).slice(2), file, url: URL.createObjectURL(file) });
     });
     renderList();
@@ -58,7 +63,7 @@
           <button class="icon-btn" data-action="down" aria-label="Move down" ${idx === items.length - 1 ? "disabled" : ""}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
           </button>
-          <button class="icon-btn" data-action="remove" aria-label="Remove">
+          <button class="icon-btn" data-action="remove" aria-label="Remove ${item.file.name}">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
           </button>
         </div>`;
@@ -72,6 +77,7 @@
     const row = e.target.closest(".file-row");
     const idx = items.findIndex((i) => i.id === row.dataset.id);
     if (btn.dataset.action === "remove") {
+      URL.revokeObjectURL(items[idx].url);
       items.splice(idx, 1);
     } else if (btn.dataset.action === "up" && idx > 0) {
       [items[idx - 1], items[idx]] = [items[idx], items[idx - 1]];
@@ -130,17 +136,36 @@
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => resolve(img);
-      img.onerror = reject;
+      img.onerror = () => reject(new Error("image load failed"));
       img.src = url;
     });
   }
 
+  // Draw every image onto a canvas first and re-encode as JPEG/PNG.
+  // This avoids relying on jsPDF's WebP support, which varies by version.
+  function toDataUrl(img, isPng) {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    if (!isPng) {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.drawImage(img, 0, 0);
+    return canvas.toDataURL(isPng ? "image/png" : "image/jpeg", 0.92);
+  }
+
   buildBtn.addEventListener("click", async () => {
-    if (items.length === 0) return;
+    if (items.length === 0) {
+      showError("Add at least one image first.");
+      return;
+    }
     clearError();
     progressLine.classList.add("show");
     resultBanner.classList.remove("show");
     downloadBtn.style.display = "none";
+    if (pdfUrl) { URL.revokeObjectURL(pdfUrl); pdfUrl = null; }
     try {
       const { jsPDF } = window.jspdf;
       let pdf = null;
@@ -148,18 +173,19 @@
         const img = await loadImageEl(items[i].url);
         const w = img.naturalWidth;
         const h = img.naturalHeight;
-        const orientation = w > h ? "l" : "p";
+        const orientation = w >= h ? "l" : "p";
+        const isPng = items[i].file.type === "image/png";
+        const dataUrl = toDataUrl(img, isPng);
         if (!pdf) {
           pdf = new jsPDF({ orientation, unit: "px", format: [w, h], compress: true });
         } else {
           pdf.addPage([w, h], orientation);
         }
-        const mime = items[i].file.type === "image/png" ? "PNG" : "JPEG";
-        pdf.addImage(img, mime, 0, 0, w, h);
+        pdf.addImage(dataUrl, isPng ? "PNG" : "JPEG", 0, 0, w, h);
       }
       const blob = pdf.output("blob");
-      const url = URL.createObjectURL(blob);
-      downloadBtn.href = url;
+      pdfUrl = URL.createObjectURL(blob);
+      downloadBtn.href = pdfUrl;
       pageCount.textContent = items.length;
       resultBanner.classList.add("show");
       downloadBtn.style.display = "inline-flex";
@@ -171,7 +197,9 @@
   });
 
   resetBtn.addEventListener("click", () => {
+    items.forEach((item) => URL.revokeObjectURL(item.url));
     items = [];
+    if (pdfUrl) { URL.revokeObjectURL(pdfUrl); pdfUrl = null; }
     fileInput.value = "";
     workArea.style.display = "none";
     clearError();

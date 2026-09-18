@@ -1,15 +1,17 @@
 /* ==========================================================================
-   QuickTools — design tokens
+   QuickTools - design tokens
    ========================================================================== */
 
 :root {
+  color-scheme: light dark;
+
   /* color */
   --bg: #F7F7F4;
   --surface: #FFFFFF;
   --surface-sunken: #F0F0EC;
   --ink: #15171B;
   --ink-soft: #5B5F67;
-  --ink-faint: #8A8E94;
+  --ink-faint: #6B6F77;
   --border: #E3E3DD;
   --border-strong: #CFCFC6;
   --accent: #2451F0;
@@ -143,9 +145,19 @@ button, input, select {
   position: sticky;
   top: 0;
   z-index: 40;
+  border-bottom: 1px solid var(--border);
+  /* No backdrop-filter directly on this element: a filter/backdrop-filter
+     here would make it the containing block for fixed-position descendants
+     (like the mobile .main-nav overlay), breaking full-viewport coverage.
+     The blur lives on ::before instead, which has no positioned children. */
+}
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
 }
 
 .site-header .wrap {
@@ -228,11 +240,13 @@ button, input, select {
   .main-nav {
     position: fixed;
     inset: 68px 0 0 0;
+    z-index: 39;
     background: var(--bg);
     flex-direction: column;
     align-items: stretch;
     gap: 0;
     padding: 12px 20px;
+    overflow-y: auto;
     transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
@@ -351,6 +365,7 @@ button, input, select {
   border: none;
   outline: none;
   background: transparent;
+  color: var(--ink);
   flex: 1;
   padding: 12px 0;
   font-size: 16px;
@@ -381,6 +396,16 @@ button, input, select {
 .search-results .sr-name { font-weight: 600; }
 .search-results .sr-desc { color: var(--ink-faint); font-size: 13px; }
 .search-results .empty { padding: 18px; color: var(--ink-faint); font-size: 14px; }
+
+@media (max-width: 460px) {
+  .search-box {
+    flex-wrap: wrap;
+    border-radius: 20px;
+    padding: 14px 14px 14px 18px;
+  }
+  .search-box input { width: 100%; flex: 1 1 100%; padding: 6px 0; }
+  .search-box .btn { flex: 1 1 100%; margin-top: 8px; }
+}
 
 /* ==========================================================================
    Sections
@@ -583,8 +608,9 @@ section { padding: 56px 0; }
 }
 .dir-search svg { color: var(--ink-faint); flex-shrink: 0; }
 .dir-search input {
-  border: none; outline: none; background: transparent; flex: 1; font-size: 15px;
+  border: none; outline: none; background: transparent; color: var(--ink); flex: 1; font-size: 15px;
 }
+.dir-search input::placeholder { color: var(--ink-faint); }
 
 .empty-state {
   text-align: center;
@@ -763,7 +789,27 @@ section { padding: 56px 0; }
   padding: 11px 13px;
   font-size: 15px;
   background: var(--surface);
+  color: var(--ink);
   min-width: 0;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-faint);
+  opacity: 1;
+}
+.field input:disabled,
+.field select:disabled,
+.field textarea:disabled {
+  color: var(--ink-faint);
+  background: var(--surface-sunken);
+  cursor: not-allowed;
+}
+.field input:-webkit-autofill,
+.field input:-webkit-autofill:hover,
+.field input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  box-shadow: 0 0 0 1000px var(--surface) inset;
+  transition: background-color 9999s ease-in-out 0s;
 }
 .field input:focus, .field select:focus, .field textarea:focus {
   border-color: var(--accent);
@@ -783,6 +829,15 @@ section { padding: 56px 0; }
 .range-field input[type="range"] {
   width: 100%;
   accent-color: var(--accent);
+}
+.range-field input[type="range"]:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.field-note {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  margin: 6px 0 0;
 }
 .range-field .range-top {
   display: flex;
@@ -871,6 +926,19 @@ details.more-options .more-body { padding-bottom: 16px; }
   margin: 18px 0;
 }
 .error-banner.show { display: flex; }
+
+.info-banner {
+  display: none;
+  align-items: center;
+  gap: 14px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 14px;
+  margin: 18px 0;
+}
+.info-banner.show { display: flex; }
 
 .progress-line {
   display: none;
@@ -1013,8 +1081,9 @@ details.more-options .more-body { padding-bottom: 16px; }
   padding: 4px 4px 4px 14px;
 }
 .amount-custom input {
-  border: none; outline: none; width: 70px; font-size: 14px; background: transparent;
+  border: none; outline: none; width: 70px; font-size: 14px; background: transparent; color: var(--ink);
 }
+.amount-custom input::placeholder { color: var(--ink-faint); }
 .disclaimer-note {
   font-size: 12.5px;
   color: var(--ink-faint);

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<title>Compress PDF - QuickTools</title>
+<meta name="description" content="Reduce PDF file size for easier sharing and uploading, right in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-path-prefix="../">
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="../index.html" class="logo">
+      <span class="logo-mark" aria-hidden="true"></span>
+      QuickTools
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html" aria-current="page">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap tool-page-header">
+    <div class="breadcrumb"><a href="../tools.html">Tools</a> / Compress PDF</div>
+    <h1>Compress PDF</h1>
+    <p class="lede">Reduce PDF file size for easier sharing and uploading. This changes file size, not page dimensions.</p>
+  </div>
+
+  <div class="wrap tool-shell">
+    <div class="panel">
+
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload a PDF">
+        <div class="dz-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg></div>
+        <h3>Drop a PDF here</h3>
+        <p>or choose a file, up to 50 MB</p>
+        <label class="btn btn-primary" for="fileInput">Choose PDF</label>
+        <input type="file" id="fileInput" accept="application/pdf">
+      </div>
+
+      <div class="error-banner" id="errorBanner" role="alert"></div>
+
+      <div id="workArea" style="display:none;">
+        <div class="file-list">
+          <div class="file-row">
+            <div class="thumb" style="display:flex;align-items:center;justify-content:center;color:var(--accent-ink);background:var(--accent-soft);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+            </div>
+            <div class="fmeta">
+              <div class="fname" id="fileName">-</div>
+              <div class="fsize" id="fileMeta">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-title">Compression level</div>
+        <div class="preset-row" id="levelRow">
+          <button type="button" class="preset-chip" data-level="low">Low compression - better quality</button>
+          <button type="button" class="preset-chip active" data-level="balanced">Balanced</button>
+          <button type="button" class="preset-chip" data-level="strong">Strong compression - smaller size</button>
+        </div>
+
+        <p class="field-note">This process flattens each page into an image to shrink file size, so text will no longer be selectable afterward. PDFs that are already small, or made mostly of text and vector graphics, may not shrink much - sometimes not at all.</p>
+
+        <div class="progress-line" id="progressLine"><span class="spinner"></span> Compressing...</div>
+
+        <div class="result-banner" id="resultBanner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          <span><span class="rb-num" id="reductionPct">-</span> smaller (<span id="resultSize">-</span>)</span>
+        </div>
+
+        <div class="info-banner" id="infoBanner">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          <span id="infoBannerText">This PDF didn't get noticeably smaller, so here's your original file unchanged.</span>
+        </div>
+
+        <div class="actions-row">
+          <button class="btn btn-primary btn-lg" id="compressBtn">Compress PDF</button>
+          <a class="btn btn-secondary btn-lg" id="downloadBtn" download="compressed.pdf" style="display:none;">Download PDF</a>
+          <button class="btn btn-ghost" id="resetBtn">Start over</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="copy">© 2026 QuickTools. Free tools, no login required.</div>
+    <nav aria-label="Footer">
+      <a href="../index.html">Home</a>
+      <a href="../tools.html">Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../support.html">Support</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/compress-pdf.js"></script>
+</body>
+</html>

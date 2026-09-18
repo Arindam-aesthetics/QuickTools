@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QR Code Generator — QuickTools</title>
+<meta name="color-scheme" content="light dark">
+<title>QR Code Generator - QuickTools</title>
 <meta name="description" content="Turn a link, message, or UPI payment into a scannable QR code, right in your browser.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -75,6 +76,13 @@
             <label for="upiAmountInput">Amount (optional)</label>
             <input type="number" id="upiAmountInput" placeholder="e.g. 100" min="1">
           </div>
+          <div class="upi-id-row" id="upiIdCopyRow" style="display:none; margin: 4px 0 2px;">
+            <code id="upiIdEcho">-</code>
+            <button type="button" class="icon-btn" id="copyUpiIdOnlyBtn" aria-label="Copy UPI ID">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+          <p class="field-note">Some UPI apps show a caution message for payment links opened from a browser. If that happens, copy the UPI ID above and pay manually in your UPI app, or scan the QR code from another device.</p>
         </div>
 
         <details class="more-options">
@@ -103,6 +111,7 @@
         <div id="qrCanvasHost"></div>
         <p id="qrEmptyState" style="margin:0; color: var(--ink-faint); font-size: 14px; text-align:center;">Your QR code will appear here.</p>
         <a class="btn btn-secondary" id="downloadQrBtn" download="qrcode.png" style="display:none;">Download PNG</a>
+        <p class="field-note" id="qrTip" style="display:none; text-align:center;">Tip: you can also press and hold the code above to save it as an image.</p>
       </div>
 
     </div>

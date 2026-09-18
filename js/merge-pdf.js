@@ -12,8 +12,11 @@
   const mergedPageCount = document.getElementById("mergedPageCount");
   const progressLine = document.getElementById("progressLine");
 
+  const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB per file
+
   let items = []; // { id, file }
   let dragId = null;
+  let mergedUrl = null;
 
   function showError(msg) { errorBanner.textContent = msg; errorBanner.classList.add("show"); }
   function clearError() { errorBanner.classList.remove("show"); }
@@ -25,13 +28,15 @@
 
   function addFiles(fileArr) {
     clearError();
-    const valid = fileArr.filter((f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf"));
+    const isPdf = (f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf");
+    const valid = fileArr.filter((f) => isPdf(f) && f.size <= MAX_FILE_BYTES);
     if (valid.length === 0) {
-      showError("Please choose PDF files.");
+      const anyPdf = fileArr.some(isPdf);
+      showError(anyPdf ? "Those PDFs are larger than 50 MB each. Please choose smaller files." : "Please choose PDF files.");
       return;
     }
     if (valid.length < fileArr.length) {
-      showError("Some files were skipped — only PDF files are supported.");
+      showError("Some files were skipped - only PDF files under 50 MB are supported.");
     }
     valid.forEach((file) => {
       items.push({ id: "f" + Math.random().toString(36).slice(2), file });
@@ -63,7 +68,7 @@
           <button class="icon-btn" data-action="down" aria-label="Move down" ${idx === items.length - 1 ? "disabled" : ""}>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
           </button>
-          <button class="icon-btn" data-action="remove" aria-label="Remove">
+          <button class="icon-btn" data-action="remove" aria-label="Remove ${item.file.name}">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
           </button>
         </div>`;
@@ -140,6 +145,7 @@
     progressLine.classList.add("show");
     resultBanner.classList.remove("show");
     downloadBtn.style.display = "none";
+    if (mergedUrl) { URL.revokeObjectURL(mergedUrl); mergedUrl = null; }
     try {
       const { PDFDocument } = PDFLib;
       const mergedPdf = await PDFDocument.create();
@@ -151,15 +157,19 @@
         pages.forEach((p) => mergedPdf.addPage(p));
         totalPages += pages.length;
       }
+      if (totalPages === 0) {
+        showError("Those PDFs don't contain any pages to merge.");
+        return;
+      }
       const mergedBytes = await mergedPdf.save();
       const blob = new Blob([mergedBytes], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      downloadBtn.href = url;
+      mergedUrl = URL.createObjectURL(blob);
+      downloadBtn.href = mergedUrl;
       mergedPageCount.textContent = totalPages;
       resultBanner.classList.add("show");
       downloadBtn.style.display = "inline-flex";
     } catch (err) {
-      showError("Couldn't merge those PDFs — one of the files may be corrupted or password-protected.");
+      showError("Couldn't merge those PDFs - one of the files may be corrupted or password-protected.");
     } finally {
       progressLine.classList.remove("show");
     }
@@ -167,6 +177,7 @@
 
   resetBtn.addEventListener("click", () => {
     items = [];
+    if (mergedUrl) { URL.revokeObjectURL(mergedUrl); mergedUrl = null; }
     fileInput.value = "";
     workArea.style.display = "none";
     clearError();
